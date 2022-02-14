@@ -61,6 +61,8 @@ class Server(BaseServer):
 
         del self.log[nick]
 
+    async def on_invite(self, line):
+        await self.send(build("JOIN",[line.params[1]]))
 
 class Bot(BaseBot):
     def create_server(self, name: str):
