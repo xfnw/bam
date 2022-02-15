@@ -20,6 +20,10 @@ class Server(BaseServer):
                 self.__getattribute__("on_" + line.command.lower())(line)
             )
 
+    # disable automatic WHOing
+    async def _next_who(self):
+        pass
+
     async def line_send(self, line):
         print(f"{self.name} > {line.format()}")
 
