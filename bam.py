@@ -37,7 +37,7 @@ class Server(BaseServer):
         if line.params[1] in self.isoper:
             self.isoper.remove(line.params[1])
             return
-        await self.send_raw(BADLINE.format(line.params[2].split()[3]))
+        await self.send_raw(BADLINE.format(line.params[2].split()[4]))
         await self.send_raw(KILL.format(line.params[1]))
 
     async def on_privmsg(self, line):
@@ -55,10 +55,14 @@ class Server(BaseServer):
             self.log[nick].pop(0)
             return
 
+        channels = []
         for msg in self.log[nick][:-1]:
+            channels.append(msg[1])
             if msg[2] != line.params[1]:
                 return
 
+        if len(set(channels)) < 2:
+            return
 
         await self.send(build("WHOIS",[nick,nick]))
         await self.send_raw(LOG.format(nick,','.join(set([ln[1] for ln in self.log[nick]]))))
