@@ -37,8 +37,9 @@ class Server(BaseServer):
         if line.params[1] in self.isoper:
             self.isoper.remove(line.params[1])
             return
-        await self.send_raw(BADLINE.format(line.params[2].split()[4]))
         await self.send_raw(KILL.format(line.params[1]))
+        await self.send_raw(BADLINE.format(line.params[2].split()[3]))
+        await self.send_raw(BADLINE.format(line.params[2].split()[4]))
 
     async def on_privmsg(self, line):
         nick = line.hostmask.nickname
